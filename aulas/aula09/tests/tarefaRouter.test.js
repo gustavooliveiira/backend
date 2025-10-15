@@ -1,0 +1,42 @@
+const supertest = require('supertest');
+
+const app = require("../app");
+
+const request = supertest(app);
+
+const url = '/tarefas'
+
+
+let id = null; 
+
+describe('Testes do recurso /tarefas', () =>{
+    test('POST / deve retonar 201', async () => {
+        const response = await request.post(url).send({nome: "Estudar"});
+        expect(response.status).toBe(201);
+        id = response.body.id;
+    });
+
+    test('GET / deve retonar 200', async () => {
+        const response = await request.get(url);
+        expect(response.status).toBe(200);
+    });
+
+    test('GET /id deve retonar 200', async () => {
+        const response = await request.get(`${url}/${id}`);
+        expect(response.status).toBe(200);
+    });
+
+    test('PUT /id deve retonar 200', async () => {
+        const response = await request
+        .put(`${url}/${id}`)
+        .send({nome: "Estudar Express", concluida: true});
+        expect(response.status).toBe(200);
+    });
+
+    test('DELETE /id deve retonar 204', async () => {
+        const response = await request.delete(`${url}/${id}`)
+        expect(response.status).toBe(204);
+    });
+
+
+})
