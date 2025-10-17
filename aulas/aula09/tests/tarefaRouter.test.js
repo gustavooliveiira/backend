@@ -13,12 +13,13 @@ describe('Testes do recurso /tarefas', () =>{
     test('POST / deve retonar 201', async () => {
         const response = await request.post(url).send({nome: "Estudar"});
         expect(response.status).toBe(201);
-        id = response.body.id;
+        id = response.body._id;
     });
 
     test('GET / deve retonar 200', async () => {
         const response = await request.get(url);
         expect(response.status).toBe(200);
+        expect(Array.isArray(response.body)).toBe(true);
     });
 
     test('GET /id deve retonar 200', async () => {
