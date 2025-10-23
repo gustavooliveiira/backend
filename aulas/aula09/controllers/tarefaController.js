@@ -46,16 +46,22 @@ function exibir(req, res){
 }
 
 async function atualizar(req, res){
+    try{
     const {id } = req.params;
-
-
-
     const tarefaAtualizada = await Tarefa.findOneAndUpdate(
         {_id: id}, 
         {...req.body },
-        { new: true }
+        { new: true, runValidators: true }
     );
     return res.json(tarefaAtualizada);
+} catch (err){
+    if (err.errors){
+        return res.status(422).json({msg: err.errors ['nome'].message});
+    }
+
+    return res.
+    status(500).json({msg: "Deu ruim"})
+ }
 }
 
 async function remover(req, res){
@@ -64,4 +70,4 @@ async function remover(req, res){
     return res.status(204).end();
 }
 
-module.exports= {listar, criar, buscar, exibir, atualizar, remover}
+module.exports= {listar, criar, buscar, exibir, atualizar, remover};

@@ -60,17 +60,27 @@ describe('Testes do recurso /tarefas', () =>{
         expect(response.body.concluida).toBe(true);
     });
 
+    test('PUT /id deve retonar 400', async () => {
+        const response = await request.put(`${url}/0`);
+        expect(response.status).toBe(400);
+        expect(response.body.msg).toBe("ID inválido")
+    });
+
     test('PUT /id deve retonar 404', async () => {
         const response = await request.put(`${url}/000000000000000000000000`);
         expect(response.status).toBe(404);
         expect(response.body.msg).toBe("Tarefa não encontrada")
     });
 
-    test('PUT /id deve retonar 400', async () => {
-        const response = await request.put(`${url}/0`);
-        expect(response.status).toBe(400);
-        expect(response.body.msg).toBe("ID inválido")
+    
+    test('PUT /id deve retonar 422', async () => {
+        const response = await request
+        .put(`${url}/${id}`)
+        .send({nome: "", concluida: true});
+        expect(response.status).toBe(422);
+        expect(response.body.msg).toBe("Nome da tarefa é obrigatório")
     });
+
 
     test('DELETE /id deve retonar 204', async () => {
         const response = await request.delete(`${url}/${id}`)
