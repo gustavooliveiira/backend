@@ -22,6 +22,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/tarefas', tarefaRouter)
+app.use('/tarefas', tarefaRouter);
 
 module.exports = app;
